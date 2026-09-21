@@ -39,7 +39,7 @@ jobs:
           xcodebuild \
             -workspace RnIosTest.xcworkspace \
             -scheme RnIosTest \
-            -configuration Debug \
+            -configuration Release \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             -derivedDataPath build \
@@ -49,11 +49,11 @@ jobs:
 
       - name: Zip the iOS App
         run: |
-          cd ios/build/Build/Products/Debug-iphonesimulator
+          cd ios/build/Build/Products/Release-iphonesimulator
           zip -r RnIosTest.zip RnIosTest.app
 
       - name: Upload iOS App Artifact
         uses: actions/upload-artifact@v4
         with:
           name: RnIosTest-Appetize
-          path: ios/build/Build/Products/Debug-iphonesimulator/RnIosTest.zip
+          path: ios/build/Build/Products/Release-iphonesimulator/RnIosTest.zip
