@@ -5,7 +5,13 @@ try {
   // Load .env file
   const envFile = fs.readFileSync('.env');
   const envConfig = dotenv.parse(envFile);
-  const apiKey = envConfig.GOOGLE_MAPS_API_KEY || '';
+  const apiKey = (envConfig.GOOGLE_MAPS_API_KEY || '').trim();
+
+  // An empty key makes the Google Maps SDK throw on first MapView render,
+  // so the app crashes on launch. Fail the build instead.
+  if (!apiKey) {
+    throw new Error('GOOGLE_MAPS_API_KEY is empty. Set it in .env (local) or as a GitHub Actions secret (CI).');
+  }
 
   // Update AppDelegate.swift
   const appDelegatePath = 'ios/RnIosTest/AppDelegate.swift';
