@@ -36,6 +36,18 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             COMPILER_INDEX_STORE_ENABLE=NO \
             build
+
+      - name: Zip the iOS App
+        run: |
+          cd ios/build/Build/Products/Debug-iphonesimulator
+          zip -r RnIosTest.zip RnIosTest.app
+
+      - name: Upload iOS App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RnIosTest-Appetize
+          path: ios/build/Build/Products/Debug-iphonesimulator/RnIosTest.zip
